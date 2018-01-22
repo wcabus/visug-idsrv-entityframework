@@ -163,9 +163,9 @@ namespace Sprotify.IDP
 
                         // User claims
                         context.UserClaims.AddRange(
-                            new IdentityUserClaim<string> { ClaimType = "given_name", ClaimValue = "Sprotify" },
-                            new IdentityUserClaim<string> { ClaimType = "family_name", ClaimValue = "Admin" },
-                            new IdentityUserClaim<string> { ClaimType = "email", ClaimValue = "admin@sprotify.com" }
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "given_name", ClaimValue = "Sprotify" },
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "family_name", ClaimValue = "Admin" },
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "email", ClaimValue = "admin@sprotify.com" }
                         );
 
                         // User roles
