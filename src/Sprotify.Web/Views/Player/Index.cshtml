@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Playlist>
+@{
+    ViewData["Title"] = "Browse";
+    Layout = "_PlayerLayout";
+}
+<section class="contentSpacing">
+    <div>
+        <div>
+            <section>
+                <div class="contentSpacing">
+                    <section>
+                        <h1 class="featured-title" style="text-align: center;">Chill Or Party Tonight?</h1>
+                        <div class="container-fluid container-fluid--noSpaceAround">
+                            <div class="playlists grid--limit row">
+                                @{
+                                    var chillPlaylists = new[] {
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DWZVU32KsYGUK",
+                                            Title = "Piano Dinner",
+                                            Image = "https://i.scdn.co/image/0685417d34825ba9ddcfa3dd749057cb9e3fcaa9"
+                                        },
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DX4WYpdgoIcn6",
+                                            Title = "Chill Hits",
+                                            Image = "https://i.scdn.co/image/141c40597e8b10ad61822aec44584e295e2c7330"
+                                        },
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DX4dyzvuaRJ0n",
+                                            Title = "mint",
+                                            Image = "https://i.scdn.co/image/110e63380192f8b258d9bf6e01c9aafd45acd712"
+                                        },
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DXdaMkR2m2cl5",
+                                            Title = "Dinnertime Acoustics",
+                                            Image = "https://i.scdn.co/image/b766c440e050ff67520b8b0876acaacb2ee09cd0"
+                                        },
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DWUzFXarNiofw",
+                                            Title = "The Newness",
+                                            Image = "https://i.scdn.co/image/5e092e7af02b161922b5f56e0a3602304d38f154"
+                                        },
+                                        new Playlist
+                                        {
+                                            Id = "37i9dQZF1DX1N5uK98ms5p",
+                                            Title = "Teen Party",
+                                            Image = "https://i.scdn.co/image/9b96b1f67fea04489ec186a0a69c5c49de240265"
+                                        },
+                                     };
+                                }
+                                @foreach (var playlist in chillPlaylists)
+                                {
+                                    @Html.Partial("PlaylistButton", playlist)
+                                }
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <h1 class="featured-title" style="text-align: center;">Your playlists</h1>
+                        <div class="container-fluid container-fluid--noSpaceAround">
+                            <div class="playlists grid--limit row">
+                                @if (Model != null)
+                                {
+                                @foreach (var playlist in Model)
+                                {
+                                    @Html.Partial("PlaylistButton", playlist)
+                                }
+                                }
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

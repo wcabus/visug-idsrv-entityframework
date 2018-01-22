@@ -1,0 +1,102 @@
+﻿@model PlaylistWithSongs
+@{ 
+    Layout = "_PlayerLayout";
+    ViewBag.Title = Model.Title;
+}
+<div>
+    <section class="content playlist contentSpacing">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-lg-3 col-xl-4 col-sticky">
+                    <header class="entity-info">
+                        <div class="media-object">
+                            <div class="media-object-hoverable">
+                                <div class="cover-art shadow light actionable">
+                                    <div>
+                                        <div class="icon"><svg width="80" height="81" viewBox="0 0 80 81" xmlns="http://www.w3.org/2000/svg"><title>Playlist Icon</title><path d="M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z" fill="currentColor" fill-rule="evenodd"></path></svg></div>
+                                        @if (!string.IsNullOrWhiteSpace(Model.Image))
+                                        {
+                                            <div class="cover-art-image cover-art-image-loaded" style="background-image: url(&quot;@Model.Image&quot;);"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="cover-art-image"></div>
+                                        }
+                                    </div>
+                                    <button class="cover-art-playback">
+                                        <svg class="icon-play" viewBox="0 0 85 100"><path fill="currentColor" d="M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z"><title>PLAY</title></path></svg>
+                                    </button>
+                                </div>
+                                <div class="mo-info">
+                                    <div class="react-contextmenu-wrapper">
+                                        <div class="mo-info-name" title="@Model.Title">@Model.Title</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mo-meta ellipsis-one-line">
+                            <span>By </span>
+                            <span>
+                                <a asp-controller="User" asp-action="Info" asp-route-id="@Model.CreatorId" asp-area="">@Model.CreatorName</a>
+                            </span>
+                        </div>
+                        <div class="media-bd">
+                            <div class="entity-name">
+                                <h2>@Model.Title</h2>
+                                <div>
+                                    <span>By </span>
+                                    <span>
+                                        <a asp-controller="User" asp-action="Info" asp-route-id="@Model.CreatorId" asp-area="">@Model.CreatorName</a>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-silence entity-additional-info">@Model.Songs.Count() songs</p>
+                            <button class="btn btn-green">PLAY</button>
+                        </div>
+                    </header>
+                </div>
+                @{ 
+                    var idx = 1;
+                }
+                <div class="col-xs-12 col-lg-9 col-xl-8">
+                    <section class="tracklist-container">
+                        <ol class="tracklist">
+                            @foreach (var song in Model.Songs) {
+                            <li class="tracklist-row" role="button">
+                                <div class="tracklist-col position-outer">
+                                    <div class="tracklist-play-pause tracklist-top-align"><svg class="icon-play" viewBox="0 0 85 100"><path fill="currentColor" d="M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z"><title>PLAY</title></path></svg></div>
+                                    <div class="position tracklist-top-align">@(idx++).</div>
+                                </div>
+                                <div class="tracklist-col name">
+                                    <div class="track-name-wrapper ellipsis-one-line tracklist-top-align">
+                                        <span class="tracklist-name">@song.Title</span>
+                                        <span class="artists-album ellipsis-one-line">
+                                            <span>
+                                                <span class="react-contextmenu-wrapper">
+                                                    <a tabindex="-1" class="link-subtle" asp-controller="Player" asp-action="Band" asp-route-id="@song.BandId">@song.Band</a>
+                                                </span>
+                                            </span>
+                                            @if (song.AlbumId != null)
+                                            {
+                                            <span class="artists-album-separator" aria-label="in album">•</span>
+                                            <span class="react-contextmenu-wrapper">
+                                                <a tabindex="-1" class="link-subtle" asp-controller="Player" asp-action="Album" asp-route-id="@song.AlbumId">@song.Album</a>
+                                            </span>
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="tracklist-col tracklist-col-duration">
+                                    <div class="tracklist-duration tracklist-top-align">
+                                        <span>@song.Duration.Minutes:@song.Duration.Seconds.ToString("00")</span>
+                                    </div>
+                                </div>
+                            </li>
+                            }
+                        </ol>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

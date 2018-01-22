@@ -1,0 +1,26 @@
+﻿@model Playlist
+
+<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2">
+    <div class="media-object" style="max-width: 450px;">
+        <div class="media-object-hoverable">
+            <div class="react-contextmenu-wrapper">
+                <a class="cover-art shadow light actionable" asp-action="Playlist" asp-controller="Player" asp-route-id="@Model.Id">
+                    @if (!string.IsNullOrWhiteSpace(Model.Image))
+                    {
+                    <div>
+                        <div class="cover-art-image cover-art-image-loaded" style="background-image: url(&quot;@Model.Image&quot;);"></div>
+                    </div>
+                    }
+                    <button class="cover-art-playback">
+                        <svg class="icon-play" viewBox="0 0 85 100"><path fill="currentColor" d="M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z"><title>PLAY</title></path></svg>
+                    </button>
+                </a>
+            </div>
+            <div class="mo-info">
+                <div class="react-contextmenu-wrapper">
+                    <a class="mo-info-name" title="@Model.Title" asp-action="Playlist" asp-controller="Player" asp-route-id="@Model.Id">@Model.Title</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

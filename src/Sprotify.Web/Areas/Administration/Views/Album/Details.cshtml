@@ -1,0 +1,18 @@
+﻿@model Sprotify.Web.Models.AlbumWithSongs
+@{
+    ViewData["Title"] = "Album details";
+}
+<div class="container container-content">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Album details</h2>
+            <div class="container">
+                @Html.Partial("Album", Model)
+            </div>
+            <div>
+                <a asp-action="Edit" asp-route-bandId="@ViewBag.BandId" asp-route-albumId="@Model.Id">Edit</a> |
+                <a asp-action="Index" asp-route-bandId="@ViewBag.BandId">Back to albums</a>
+            </div>
+        </div>
+    </div>
+</div>

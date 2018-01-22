@@ -1,0 +1,13 @@
+﻿@model AlbumWithSongs
+<div class="row">
+    <div class="col-md-3">
+        <h3>@Model.Title</h3>
+        @if (!string.IsNullOrEmpty(Model.Art))
+        {
+            <img src="@Model.Art" class="img-thumbnail" title="@Model.Title" alt="@Model.Title" />
+        }
+    </div>
+    <div class="col-md-9">
+        @Html.Partial("AlbumSongs", Model.Songs)
+    </div>
+</div>

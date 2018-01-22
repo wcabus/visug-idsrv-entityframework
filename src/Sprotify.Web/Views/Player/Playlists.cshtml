@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Playlist>
+@{
+    ViewData["Title"] = "Your Music";
+    Layout = "_PlayerLayout";
+}
+<section class="contentSpacing">
+    <div class="">
+        <div class="asideButton-container">
+            <nav class="A0f-D9GnabaNkGDu5722F"><ul class="_2qxszZDSg4070SwogL5b7O"><li class="_1IZEXeoITlpZoDbSTO79x4"><a class="Vg0L1vwJXv5JSYn-HUx0C link-subtle _2rScaV3bBHoj7O47a_JnaH" href="/collection/playlists">PLAYLISTS</a></li><li class="_1IZEXeoITlpZoDbSTO79x4"><a class="Vg0L1vwJXv5JSYn-HUx0C link-subtle" href="/daily-mix-hub">YOUR DAILY MIX</a></li><li class="_1IZEXeoITlpZoDbSTO79x4"><a class="Vg0L1vwJXv5JSYn-HUx0C link-subtle" href="/collection/songs">SONGS</a></li><li class="_1IZEXeoITlpZoDbSTO79x4"><a class="Vg0L1vwJXv5JSYn-HUx0C link-subtle" href="/collection/albums">ALBUMS</a></li><li class="_1IZEXeoITlpZoDbSTO79x4"><a class="Vg0L1vwJXv5JSYn-HUx0C link-subtle" href="/collection/artists">ARTISTS</a></li></ul></nav>
+            <div class="asideButton">
+                <a asp-action="CreatePlaylist" asp-controller="Player" class="btn btn-green btn-small asideButton-button">NEW PLAYLIST</a>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div>
+            <section>
+                <div class="contentSpacing">
+                    <section>
+                        <h1 class="featured-title" style="text-align: center;">Your Music</h1>
+                        <div class="container-fluid container-fluid--noSpaceAround">
+                            <div class="playlists grid--limit row">
+                                @foreach (var playlist in Model)
+                                {
+                                    @Html.Partial("PlaylistButton", playlist)
+                                }
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Song>
+
+<table class="table table-responsive table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Song</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    @foreach (var song in Model)
+    {
+        <tr>
+            <td>@(song.Position). @song.Title</td>
+            <td>@song.Duration.ToString("mm\\:ss")</td>
+        </tr>
+    }
+</table>

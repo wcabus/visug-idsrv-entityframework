@@ -1,0 +1,22 @@
+﻿@model IEnumerable<Song>
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container container-content">
+    <div class="row">
+        <div class="col-md-12">
+            @foreach (var band in Model.GroupBy(x => x.Band))
+            {
+            <h2>@band.Key</h2>
+            <div class="container">
+                @foreach (var album in band.GroupBy(x => x.Album))
+                {
+                    var albumInfo = new AlbumWithSongs(album);
+                    Html.RenderPartial("Album", albumInfo);
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>

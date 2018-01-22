@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html class="no-focus-outline">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title - Sprotify Web Player</title>
+    <link rel="stylesheet" href="/css/web-player.css">
+</head>
+<body class="env-prod">
+    <div id="main">
+        <div class="root">
+            <div class="wrap" style="background-image: linear-gradient(rgb(94, 75, 58), rgb(9, 7, 5) 85%);"></div>
+            <div class="top-container">
+                <div class="nav-bar-container">
+                    <nav class="navBar">
+                        <div class="navBar-expand">
+                            <ul>
+                                <div class="navBar-header">
+                                    <a class="logo" asp-action="Index" asp-controller="Player" asp-area="">
+                                        <img src="~/images/sprotify-invert.png" title="Sprotify" alt="Sprotify"/>
+                                    </a>
+                                </div>
+                                <div class="navBar-group">
+                                    <li class="navBar-item navBar-item--with-icon">
+                                        <a class="link-subtle navBar-link ellipsis-one-line" asp-action="Search" asp-controller="Player" asp-area="">
+                                            Search
+                                            <div class="icon search-icon">
+                                                <svg viewBox="0 0 27 28" xmlns="http://www.w3.org/2000/svg"><title>Search</title><path d="M18.387 16.623C19.995 15.076 21 12.907 21 10.5 21 5.806 17.195 2 12.5 2 7.806 2 4 5.806 4 10.5S7.806 19 12.5 19c1.927 0 3.7-.65 5.125-1.73l4.4 5.153.76-.65-4.398-5.15zM12.5 18C8.364 18 5 14.636 5 10.5S8.364 3 12.5 3 20 6.364 20 10.5 16.636 18 12.5 18z" fill="currentColor" fill-rule="evenodd"></path></svg>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </div>
+                                <div class="navBar-group">
+                                    <li class="navBar-item">
+                                        <a class="link-subtle navBar-link ellipsis-one-line navBar-link--active" asp-action="Index" asp-controller="Player" asp-area="">Home</a>
+                                    </li>
+                                    <li class="navBar-item">
+                                        <a class="link-subtle navBar-link ellipsis-one-line" asp-action="Playlists" asp-controller="Player" asp-area="">Your Music</a>
+                                    </li>
+                                </div>
+                            </ul><!-- react-empty: 30 -->
+                        </div>
+                        <div class="sessionInfo">
+                            <div class="user-widget link-subtle ellipsis-one-line">
+                                <a asp-action="Manage" asp-controller="Account" asp-area="">
+                                    <span class="user-link">@User.GetGivenName() @User.GetSurname()</span>
+                                </a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="main-view-container">
+                    <div class="hw-accelerate">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <div class="nowPlayingBar-container">
+                <footer class="now-playing-bar-container">
+                    <div class="now-playing-bar">
+                        <div class="now-playing-bar__left">
+                            <div class="now-playing">
+                                <a href="/user/spotify/playlist/37i9dQZEVXcSLdP5yHIKI4" style="border: none;">
+                                    <div class="cover-art shadow now-playing__cover-art">
+                                        <div>
+                                            <div class="icon">
+                                                <svg width="80" height="81" viewBox="0 0 80 81" xmlns="http://www.w3.org/2000/svg">
+                                                    <title>Playlist Icon</title>
+                                                    <path d="M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z" fill="currentColor" fill-rule="evenodd"></path>
+                                                </svg>
+                                            </div>
+                                            <div class="cover-art-image cover-art-image-loaded" style="background-image: url(&quot;https://i.scdn.co/image/68fce265e0b8db68eb47c1f3ab6a7691ac905703&quot;);"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="track-info ellipsis-one-line">
+                                    <div class="track-info__name ellipsis-one-line">
+                                        <div class="react-contextmenu-wrapper">
+                                            <a href="/album/5uXkC0IXxO0qxoCaCvIMU8">Not A Single Word - George Acosta Remix</a>
+                                        </div>
+                                    </div>
+                                    <div class="track-info__artists link-subtle ellipsis-one-line">
+                                        <span>
+                                            <span class="react-contextmenu-wrapper"><a href="/artist/4bYwbb6k4ujHD2NXRxSwRP">Robbie Rivera</a></span>
+                                        </span>
+                                        <span>
+                                            <!-- react-text: 927 -->, <!-- /react-text -->
+                                            <span class="react-contextmenu-wrapper"><a href="/artist/1BfUadsDTrduDQy44ugJNX">Jordan Kaahn</a></span>
+                                        </span>
+                                        <span><!-- react-text: 931 -->, <!-- /react-text -->
+                                            <span class="react-contextmenu-wrapper"><a href="/artist/5HQ7CCzNIm8g1nysh4gDM7">George Acosta</a></span>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button class="control-button spoticon-add-16" title="Save to Your Music"></button>
+                            </div>
+                        </div><div class="now-playing-bar__center">
+                            <div class="player-controls">
+                                <div class="player-controls__buttons">
+                                    <button class="control-button spoticon-shuffle-16 control-button--active control-button--active-dot" title="Disable shuffle"></button>
+                                    <button class="control-button spoticon-skip-back-16" title="Previous"></button>
+                                    <button class="control-button spoticon-play-16 control-button--circled" title="Play"></button>
+                                    <button class="control-button spoticon-skip-forward-16" title="Next"></button>
+                                    <button class="control-button spoticon-repeat-16" title="Enable repeat"></button>
+                                </div>
+                                <div class="playback-bar">
+                                    <div class="playback-bar__progress-time">0:00</div>
+                                    <div class="progress-bar">
+                                        <div class="middle-align progress-bar__bg">
+                                            <div class="progress-bar__fg" style="width: 0%;"></div>
+                                            <div class="middle-align progress-bar__slider" style="left: 0%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="playback-bar__progress-time">3:30</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="now-playing-bar__right">
+                            <div class="now-playing-bar__right__inner">
+                                <div class="extra-controls">
+                                    <span class="connect-device-picker">
+                                        <div class="connect-device-list-container">
+                                            <div class="connect-title">
+                                                <span class="connect-title__text">Connect to a device</span>
+                                                <a class="connect-title__help" href="https://www.spotify.com/connect/?utm_source=wp-picker&amp;utm_medium=web" target="_blank"><img src="/static/assets/images/connect_help.png" title="What is Spotify Connect?"></a>
+                                            </div>
+                                            <div class="connect-header">
+                                                <img class="connect-header__image" src="/static/assets/connect_header@1x.png">
+                                            </div>
+                                            <ul class="connect-device-list">
+                                                <button class="media connect-device-list-item">
+                                                    <div class="connect-device-list-item__icon">
+                                                        <div class="device spoticon-device-computer-32"></div>
+                                                    </div>
+                                                    <div class="connect-device-list-item__info">
+                                                        <span class="connect-device-list-item__device-subtitle ellipsis-one-line">This Web Browser</span>
+                                                        <span class="connect-device-list-item__device-title ellipsis-one-line">
+                                                            <span class="connect-device-list-item__connect-icon spoticon-spotify-connect-16"></span>
+                                                            <!-- react-text: 150 -->Spotify Connect<!-- /react-text -->
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </ul>
+                                        </div>
+                                        <button class="spoticon-devices-16 control-button"></button>
+                                    </span>
+                                    <div class="volume-bar">
+                                        <button class="spoticon-volume-16 control-button volume-bar__icon"></button>
+                                        <div class="progress-bar">
+                                            <div class="middle-align progress-bar__bg">
+                                                <div class="progress-bar__fg" style="width: 100%;"></div>
+                                                <div class="middle-align progress-bar__slider" style="left: 100%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <environment include="Development">
+        <script src="/lib/jquery/dist/jquery.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+    </environment>
+
+    @RenderSection("Scripts", required:false)
+</body>
+</html>
