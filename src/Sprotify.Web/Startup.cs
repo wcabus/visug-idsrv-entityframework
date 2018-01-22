@@ -43,68 +43,7 @@ namespace Sprotify.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            // Authentication
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
-                .AddCookie()
-                .AddOpenIdConnect(options =>
-                {
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.RequireHttpsMetadata = true;
-                    options.GetClaimsFromUserInfoEndpoint = true;
-                    options.SaveTokens = true;
-
-                    options.Authority = Configuration.GetValue<string>("Authority");
-                    options.ClientId = Configuration.GetValue<string>("ClientId");
-                    options.ClientSecret = Configuration.GetValue<string>("ClientSecret");
-
-                    options.Scope.Add("openid");
-                    options.Scope.Add("email");
-                    options.Scope.Add("profile");
-                    options.Scope.Add("roles");
-                    options.Scope.Add("offline_access");
-                    options.Scope.Add(Configuration.GetValue<string>("ApiName"));
-
-                    options.ResponseType = "code id_token";
-
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        NameClaimType = "given_name",
-                        RoleClaimType = "role"
-                    };
-
-                    options.Events = new OpenIdConnectEvents
-                    {
-                        OnTokenValidated = ctx =>
-                        {
-                            var identity = ctx.Principal.Identity as ClaimsIdentity;
-
-                            var subjectClaim = identity.Claims.FirstOrDefault(x => x.Type == "sub");
-                            var newIdentity = new ClaimsIdentity(identity.AuthenticationType, "given_name", "role");
-                            newIdentity.AddClaim(subjectClaim);
-
-                            ctx.Principal = new ClaimsPrincipal(newIdentity);
-
-                            return Task.CompletedTask;
-                        },
-                        OnUserInformationReceived = ctx =>
-                        {
-                            var identity = ctx.Principal.Identity as ClaimsIdentity;
-
-                            var newIdentity = new ClaimsIdentity(identity.AuthenticationType, "given_name", "role");
-                            newIdentity.AddClaims(ctx.User.Properties().Select(x => new Claim(x.Name, x.Value.ToString())));
-
-                            ctx.Principal = new ClaimsPrincipal(newIdentity);
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+            // TODO: Setup authentication
 
             services.AddSession();
         }
@@ -122,7 +61,7 @@ namespace Sprotify.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseAuthentication();
+            // app.UseAuthentication();
 
             app.UseSession();
 
