@@ -26,7 +26,13 @@ namespace Sprotify.WebApi
 
             Bootstrap.Initialize(services, Configuration);
 
-            // TODO: Setup authentication
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("Authority");
+                    options.RequireHttpsMetadata = true;
+                    options.ApiName = Configuration.GetValue<string>("ApiName");
+                });
 
             services.AddMvc();
         }
@@ -45,7 +51,7 @@ namespace Sprotify.WebApi
                 context.Seed().Wait();
             }
 
-            // app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseMvc();
         }

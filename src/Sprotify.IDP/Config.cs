@@ -50,6 +50,8 @@ namespace Sprotify.IDP
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.Address,
+                        "roles",
+                        "sprotifyapi"
                     },
 
                     RedirectUris =
@@ -59,7 +61,9 @@ namespace Sprotify.IDP
                     PostLogoutRedirectUris =
                     {
                         "https://localhost:44300/signout-callback-oidc"
-                    }
+                    },
+
+                    RequireConsent = false
                 }
             };
         }
@@ -73,6 +77,15 @@ namespace Sprotify.IDP
                 new IdentityResources.Address(), 
                 new IdentityResources.Phone(), 
                 new IdentityResources.Email(), 
+                new IdentityResource("roles", new [] { "role" })
+            };
+        }
+
+        public static IEnumerable<ApiResource> GetApiResources()
+        {
+            return new []
+            {
+                new ApiResource("sprotifyapi", "Sprotify API", new[] { "role" })
             };
         }
     }

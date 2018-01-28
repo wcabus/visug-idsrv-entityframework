@@ -17,6 +17,7 @@ namespace Sprotify.IDP
                 .AddDeveloperSigningCredential()
                 .AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
                 .AddTestUsers(Config.GetUsers());
         }
 
