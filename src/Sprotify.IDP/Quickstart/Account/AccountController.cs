@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
-using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Sprotify.IDP.Models;
 
@@ -26,7 +26,6 @@ namespace IdentityServer4.Quickstart.UI
     /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
     /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
     /// </summary>
-    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
@@ -70,29 +69,8 @@ namespace IdentityServer4.Quickstart.UI
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model, string button)
+        public async Task<IActionResult> Login(LoginInputModel model, bool fromRegister = false)
         {
-            if (button != "login")
-            {
-                // the user clicked the "cancel" button
-                var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-                if (context != null)
-                {
-                    // if the user cancels, send a result back into IdentityServer as if they 
-                    // denied the consent (even if this client does not require consent).
-                    // this will send back an access denied OIDC error response to the client.
-                    await _interaction.GrantConsentAsync(context, ConsentResponse.Denied);
-                    
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    return Redirect(model.ReturnUrl);
-                }
-                else
-                {
-                    // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("~/");
-                }
-            }
-
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, false);
@@ -117,7 +95,7 @@ namespace IdentityServer4.Quickstart.UI
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     // the IsLocalUrl check is only necessary if you want to support additional local pages, otherwise IsValidReturnUrl is more strict
-                    if (_interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl))
+                    if (_interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl) || fromRegister)
                     {
                         return Redirect(model.ReturnUrl);
                     }
@@ -167,8 +145,8 @@ namespace IdentityServer4.Quickstart.UI
             if (User?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await HttpContext.SignOutAsync();
-
+                await _signInManager.SignOutAsync();
+                
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
@@ -186,6 +164,61 @@ namespace IdentityServer4.Quickstart.UI
             }
 
             return View("LoggedOut", vm);
+        }
+
+        [HttpGet("signup")]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost("signup")]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var claims = new[]
+                {
+                    new Claim("given_name", model.FirstName),
+                    new Claim("family_name", model.LastName),
+                    new Claim("email", model.Email),
+                };
+
+                var result = await _userManager.CreateAsync(user, model.Password);
+                var result2 = result.Succeeded ? await _userManager.AddClaimsAsync(user, claims) : result;
+
+                if (result.Succeeded && result2.Succeeded)
+                {
+                    await _userManager.AddClaimsAsync(user, claims);
+                    
+                    return await Login(new LoginInputModel
+                    {
+                        Username = model.Email,
+                        Password = model.Password,
+                        ReturnUrl = returnUrl
+                    }, fromRegister: true);
+                }
+
+                AddErrors(result);
+                AddErrors(result2);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
 
         /*****************************************/
