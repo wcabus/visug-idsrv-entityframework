@@ -55,6 +55,10 @@ namespace Sprotify.IDP
                     RedirectUris =
                     {
                         "https://localhost:44300/signin-oidc"
+                    },
+                    PostLogoutRedirectUris =
+                    {
+                        "https://localhost:44300/signout-callback-oidc"
                     }
                 }
             };

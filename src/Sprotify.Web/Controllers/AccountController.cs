@@ -41,7 +41,10 @@ namespace Sprotify.Web.Controllers
         [Route("/signout")]
         public async Task Logout()
         {
-            // TODO sign out
+            // sign out locally and remove the cookie
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            // sign out of the IDP
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
         [Route("/signup")]
