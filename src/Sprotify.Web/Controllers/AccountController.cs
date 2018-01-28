@@ -24,11 +24,11 @@ namespace Sprotify.Web.Controllers
         [Route("/signin")]
         public async Task<IActionResult> Login(string redirectUrl = null)
         {
-            //// When returning with an authenticated user, make sure our Sprotify API knows this user
-            //if (User.Identity.IsAuthenticated)
-            //{
-            //    await _userService.EnsureUserExists(User.GetSubject(), User.GetGivenName());
-            //}
+            // When returning with an authenticated user, make sure our Sprotify API knows this user
+            if (User.Identity.IsAuthenticated)
+            {
+                await _userService.EnsureUserExists(User.GetSubject(), User.GetGivenName());
+            }
 
             if (string.IsNullOrWhiteSpace(redirectUrl) || !Url.IsLocalUrl(redirectUrl))
             {

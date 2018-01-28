@@ -24,6 +24,7 @@ namespace Sprotify.IDP
                         new Claim("given_name", "Wesley"),
                         new Claim("family_name", "Cabus"),
                         new Claim("address", "Antwerp"),
+                        new Claim("email", "wesley@gotsharp.be")
                     }
                 }
             };
