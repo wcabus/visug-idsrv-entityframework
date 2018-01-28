@@ -1,13 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Sprotify.IDP.Data;
+using Sprotify.IDP.Models;
 
 namespace Sprotify.IDP
 {
@@ -24,13 +28,29 @@ namespace Sprotify.IDP
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ApplicationDbContext>(
+                x => x.UseSqlServer(Configuration.GetConnectionString("IdentityDB"))
+            );
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(
+                    x =>
+                    {
+                        x.User.RequireUniqueEmail = true;
+                        x.Password.RequireDigit = false;
+                        x.Password.RequireNonAlphanumeric = false;
+                        x.Password.RequireUppercase = false;
+                        x.Password.RequiredLength = 6;
+                    }
+                )
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddMvc();
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
-                .AddTestUsers(Config.GetUsers())
                 // Clients, resources, ...
                 .AddConfigurationStore(x =>
                 {
@@ -42,7 +62,8 @@ namespace Sprotify.IDP
                 {
                     x.ConfigureDbContext = dbco => dbco.UseSqlServer(Configuration.GetConnectionString("IDPDB"),
                         options => options.MigrationsAssembly(migrationsAssembly));
-                });
+                })
+                .AddAspNetIdentity<ApplicationUser>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -101,6 +122,54 @@ namespace Sprotify.IDP
                         {
                             context.ApiResources.Add(resource.ToEntity());
                         }
+                        context.SaveChanges();
+                    }
+                }
+
+                using (var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
+                {
+                    context.Database.EnsureCreated();
+
+                    IdentityRole adminRole;
+                    if (!context.Roles.Any())
+                    {
+                        adminRole = new IdentityRole("admin") { NormalizedName = "admin" };
+                        context.Roles.Add(adminRole);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        adminRole = context.Roles.First(x => x.Name == "admin");
+                    }
+
+                    if (!context.Users.Any())
+                    {
+                        var user = new ApplicationUser
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            UserName = "admin@sprotify.com",
+                            NormalizedUserName = "ADMIN@SPROTIFY.COM",
+                            Email = "admin@sprotify.com",
+                            NormalizedEmail = "ADMIN@SPROTIFY.COM",
+                            EmailConfirmed = true,
+                            SecurityStamp = Guid.NewGuid().ToString()
+                        };
+
+                        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<ApplicationUser>>();
+                        user.PasswordHash = passwordHasher.HashPassword(user, "password");
+
+                        context.Users.Add(user);
+
+                        // User claims
+                        context.UserClaims.AddRange(
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "given_name", ClaimValue = "Sprotify" },
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "family_name", ClaimValue = "Admin" },
+                            new IdentityUserClaim<string> { UserId = user.Id, ClaimType = "email", ClaimValue = "admin@sprotify.com" }
+                        );
+
+                        // User roles
+                        context.UserRoles.Add(new IdentityUserRole<string> { UserId = user.Id, RoleId = adminRole.Id });
+
                         context.SaveChanges();
                     }
                 }
