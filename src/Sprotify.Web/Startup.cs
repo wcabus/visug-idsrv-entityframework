@@ -43,6 +43,8 @@ namespace Sprotify.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            
             services.AddAuthentication(o =>
             {
                 o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -64,6 +66,39 @@ namespace Sprotify.Web
                     o.Scope.Add("email");
 
                     o.ResponseType = "code id_token";
+
+                    o.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        NameClaimType = "given_name",
+                        RoleClaimType = "role"
+                    };
+
+                    o.Events = new OpenIdConnectEvents
+                    {
+                        OnTokenValidated = ctx =>
+                        {
+                            var identity = ctx.Principal.Identity as ClaimsIdentity;
+
+                            var subjectClaim = identity.Claims.FirstOrDefault(x => x.Type == "sub");
+                            var newIdentity = new ClaimsIdentity(identity.AuthenticationType, "given_name", "role");
+                            newIdentity.AddClaim(subjectClaim);
+
+                            ctx.Principal = new ClaimsPrincipal(newIdentity);
+
+                            return Task.CompletedTask;
+                        },
+                        OnUserInformationReceived = ctx =>
+                        {
+                            var identity = ctx.Principal.Identity as ClaimsIdentity;
+
+                            var newIdentity = new ClaimsIdentity(identity.AuthenticationType, "given_name", "role");
+                            newIdentity.AddClaims(ctx.User.Properties().Select(x => new Claim(x.Name, x.Value.ToString())));
+
+                            ctx.Principal = new ClaimsPrincipal(newIdentity);
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
             services.AddSession();
