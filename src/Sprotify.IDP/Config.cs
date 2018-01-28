@@ -40,6 +40,7 @@ namespace Sprotify.IDP
                     ClientName = "Sprotify",
 
                     AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowOfflineAccess = true,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())

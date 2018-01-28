@@ -64,6 +64,7 @@ namespace Sprotify.Web
                     o.Scope.Add("openid");
                     o.Scope.Add("profile");
                     o.Scope.Add("email");
+                    o.Scope.Add("offline_access");
                     o.Scope.Add(Configuration.GetValue<string>("ApiName"));
 
                     o.ResponseType = "code id_token";
