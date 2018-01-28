@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sprotify.Domain", "src\Sprotify.Domain\Sprotify.Domain.csproj", "{1F7F54BF-A880-441F-A3D5-F5CE464A46B5}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sprotify.Web", "src\Sprotify.Web\Sprotify.Web.csproj", "{423E12C2-20C7-47AB-9EE4-105EB912AADF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "91. IDP", "91. IDP", "{CC4DCCAA-5337-41D8-9C9F-4C00E616BF5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sprotify.IDP", "src\Sprotify.IDP\Sprotify.IDP.csproj", "{EF03DF81-77D1-4F61-8B70-947E41D3452F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{423E12C2-20C7-47AB-9EE4-105EB912AADF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{423E12C2-20C7-47AB-9EE4-105EB912AADF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{423E12C2-20C7-47AB-9EE4-105EB912AADF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF03DF81-77D1-4F61-8B70-947E41D3452F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF03DF81-77D1-4F61-8B70-947E41D3452F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF03DF81-77D1-4F61-8B70-947E41D3452F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF03DF81-77D1-4F61-8B70-947E41D3452F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{C59035ED-FFC4-45E5-A4AF-C6092E18064C} = {F8BB9FCA-31CC-46A9-AA78-677F9FF84D41}
 		{44651017-44E8-4D38-AFE8-2C246DCDFADA} = {A5C2A2FE-6F6B-4DFF-A9C9-0C189E824A67}
 		{423E12C2-20C7-47AB-9EE4-105EB912AADF} = {5C7BCCBF-A3D9-41AB-9400-A2456F177104}
+		{EF03DF81-77D1-4F61-8B70-947E41D3452F} = {CC4DCCAA-5337-41D8-9C9F-4C00E616BF5B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19CE703D-21DC-4563-BB4F-2269AF5F2DDE}
