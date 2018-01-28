@@ -50,6 +50,11 @@ namespace Sprotify.IDP
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         IdentityServerConstants.StandardScopes.Address,
+                    },
+
+                    RedirectUris =
+                    {
+                        "https://localhost:44300/signin-oidc"
                     }
                 }
             };

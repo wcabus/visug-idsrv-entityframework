@@ -43,7 +43,28 @@ namespace Sprotify.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
 
-            // TODO: Setup authentication
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+                .AddCookie()
+                .AddOpenIdConnect(o =>
+                {
+                    o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    o.GetClaimsFromUserInfoEndpoint = true;
+                    o.SaveTokens = true;
+
+                    o.Authority = Configuration.GetValue<string>("Authority");
+                    o.ClientId = Configuration.GetValue<string>("ClientId");
+                    o.ClientSecret = Configuration.GetValue<string>("ClientSecret");
+
+                    o.Scope.Add("openid");
+                    o.Scope.Add("profile");
+                    o.Scope.Add("email");
+
+                    o.ResponseType = "code id_token";
+                });
 
             services.AddSession();
         }
@@ -61,7 +82,7 @@ namespace Sprotify.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            // app.UseAuthentication();
+            app.UseAuthentication();
 
             app.UseSession();
 
